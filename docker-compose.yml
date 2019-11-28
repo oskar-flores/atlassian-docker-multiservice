@@ -14,12 +14,13 @@ services:
       - LC_ALL
       - LANG
       - LANGUAGE
+      - VIRTUAL_HOST=confluence.docker
     ports:
       - "8090:8090"
       - "8092:8091"
       - "${DEBUG_PORT}:5005"
     networks:
-      - confluence-net 
+      - confluence-net   
 
   jira:
     container_name: jira
@@ -35,6 +36,7 @@ services:
       - LC_ALL
       - LANG
       - LANGUAGE
+      - VIRTUAL_HOST=jira.docker
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -42,6 +44,22 @@ services:
       - ldap
     networks:
       - confluence-net
+
+  proxy:
+    container_name: http-proxy
+    hostname: http-proxy
+    image: codekitchen/dinghy-http-proxy
+    environment:
+      - DNS_IP=127.0.0.1
+      - CONTAINER_NAME=http-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "19322:19322/udp"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - confluence-net  
 
   postgres:
     image: postgres:${POSTGRESQL_VERSION}

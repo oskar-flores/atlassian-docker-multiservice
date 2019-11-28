@@ -76,7 +76,17 @@ then
     export $SERVICES_LIST
 fi
 
+FILE=/etc/resolver/docker
+if [ -f "$FILE" ]; then
+    echo "$FILE exist skipping"
+else
+    echo "$FILE does not exist, creating" 
+    sudo touch "$FILE"
+    echo "nameserver 127.0.0.1" >> "$FILE"
+    echo "port 19322" >> "$FILE"
+fi
+
 echo "Starting ${SERVICES_LIST[@]} $CONFLUENCE_VERSION"
 echo "---------------------------------"
 
-docker-compose up -d ${DATABASE} ldap "${SERVICES_LIST[@]}"
+docker-compose up -d ${DATABASE} ldap "${SERVICES_LIST[@]}" proxy
