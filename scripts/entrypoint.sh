@@ -1,6 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
+HOST_DOMAIN="host.docker.internal"
+HOST_IP=$(ip route | awk 'NR==1 {print $3}')
+echo -e "$HOST_IP\t$HOST_DOMAIN" >> /etc/hosts
+
 # Setup Catalina Opts
 : ${CATALINA_CONNECTOR_PROXYNAME:=}
 : ${CATALINA_CONNECTOR_PROXYPORT:=}

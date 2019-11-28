@@ -24,12 +24,14 @@ function parse_args
     while [ "$1" != "" ]; do
         case "$1" in
             -c | --confluence-version ) CONFLUENCE_RUN_VERSION="$2"; shift;;
-            -j | --jira-version ) JIRA_RUN_VERSION="$2";                 shift;;
+            -j | --jira-version ) JIRA_RUN_VERSION="$2";             shift;;
+            -s | --services ) RUN_SERVICES="$2";                     shift;;
             -h | --help )    usage;                                 exit;; # quit and show usage
             * )              args+=("$1")                                # if no match, add it to the positional args
         esac
         shift # move to next kv pair
     done
+    echo "Runing Services ${RUN_SERVICES}"
     echo "Runing with Confluence version ${CONFLUENCE_RUN_VERSION}"
     echo "Runing with jira version ${JIRA_RUN_VERSION}"
     # restore positional args
@@ -55,16 +57,22 @@ then
     export "JIRA_VERSION=${JIRA_RUN_VERSION}"
 fi
 
+if [[ ! -z "${RUN_SERVICES}" ]]
+then
+    export "SERVICES=${RUN_SERVICES}"
+fi
+
 
 for env_variable in ${args}
 do
+    echo ${env_variable}
     export ${env_variable}
     echo "set environment variable -> ${env_variable}"
 done
 
 if [[ ! -z "${SERVICES}" ]]
 then
-    IFS=', ' read -r -a SERVICES_LIST <<< ${SERVICES}
+    IFS=',' read -r -a SERVICES_LIST <<< ${SERVICES}
     export $SERVICES_LIST
 fi
 

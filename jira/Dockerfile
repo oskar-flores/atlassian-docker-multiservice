@@ -12,7 +12,7 @@ ARG JAVA_VERSION
 
 # Install some utilse
 RUN apt-get update \
-&& apt-get install -yq wget curl bash jq ttf-dejavu ca-certificates tzdata locales locales-all \
+&& apt-get install -yq wget curl bash jq ttf-dejavu ca-certificates tzdata locales locales-all iproute2 \
 && update-ca-certificates \
 && rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/*
 
