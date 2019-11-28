@@ -81,7 +81,7 @@ if [ -f "$FILE" ]; then
     echo "$FILE exist skipping"
 else
     echo "$FILE does not exist, creating" 
-    sudo touch "$FILE"
+    sudo echo -n > "$FILE"
     echo "nameserver 127.0.0.1" >> "$FILE"
     echo "port 19322" >> "$FILE"
 fi
