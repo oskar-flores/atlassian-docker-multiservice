@@ -83,11 +83,11 @@ else
     echo "$FILE does not exist, creating" 
     sudo mkdir -p "/etc/resolver/"
     sudo touch "$FILE"
-    echo "nameserver 127.0.0.1" >> "$FILE"
-    echo "port 19322" >> "$FILE"
+    sudo echo "nameserver 127.0.0.1" >> "$FILE"
+    sudo echo "port 19322" >> "$FILE"
 fi
 
 echo "Starting ${SERVICES_LIST[@]} $CONFLUENCE_VERSION"
 echo "---------------------------------"
 
-docker-compose up -d ${DATABASE} ldap "${SERVICES_LIST[@]}" proxy
+docker-compose up -d ${DATABASE} ldap ${SERVICES_LIST[@]} proxy
